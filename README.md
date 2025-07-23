@@ -27,6 +27,7 @@ pip install -r requirements.txt
 ```
 
 <h3 id="3.2">⏩ Quickly Start </h3>
+
 Users can use MTDEvalPipeline for quick inference:
 ```bash
 from inference import MTDEvalPipeline
