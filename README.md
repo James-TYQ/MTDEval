@@ -27,17 +27,43 @@ pip install -r requirements.txt
 ```
 
 <h3 id="3.2">⏩ Quickly Start </h3>
-<!-- 如需采用 MTDEval 的数据格式进行训练，请首先按照 /data/P^2-MTD 文件夹中的数据格式构建训练集。需要注意的是，我们支持 two distinct models in our experiments: one for overall rating，在overall文件夹下； and another for evaluating the performance across ten specific dimensions, 在Multi_Dim文件夹下. 可使用如下命令进行模型训练 -->
+Users can use MTDEvalPipeline for quick inference:
+```bash
+from inference import MTDEvalPipeline
 
-If you need to train using MTDEvalr's format, first construct the training data according to the data format in `data/train/seeds.json`. Then, use the following command to train:
+# Initialize the pipeline with your model
+pipeline = MTDEvalPipeline(
+    model_id="YOUR_MODEL_PATH",
+    trust_remote_code=True,  # Required for custom models
+    torch_dtype=torch.float32  # Adjust based on your hardware
+)
+
+# Inference using standard chat message format
+chat_messages = [
+    {"role": "user", "content": "What's the capital of France?"},
+    {"role": "assistant", "content": "Paris is the capital of France."}
+]
+
+result = pipeline(chat_messages)
+evaluation_dim = result['evaluation_dim']  # List of evaluated dimensions (default: ["Overall"])
+overall_score = result['overall_score']  # Overall score (0-1 scale)
+```
+
+To train using MTDEval's data format, you need to first construct the training dataset according to the data format provided in the /data/P^2-MTD folder, and then use the commands in the overall and Multi_Dim folders as follows:
 
 ```bash
-bash train_Multi.sh   # Our setting achieves good performance, but if you want to train a better result, you should adjust some parameters
+bash train_Multi.sh   # you can adjust some parameters in train_Multi.sh for better training performance
+```
+
+After obtaining the trained models, for testing on the Daily-MTD dataset, navigate to the appropriate directory: for the single rating task, enter the /Overall/test/single directory; for the pairwise comparison task, enter the /Overall/test/pairwise directory; and for the Multi-Dimensional Comparison task, enter the /Multi_Dim directory. Then, use the following command to evaluate:
+
+```bash
+python test.py
 ```
 
 <h3 id="3.3">📜 Tips </h3>
 
-1. The train data examples lie in the `data/train/seeds.json` file.
-2. The MD-Eval Benchmark is available at `data/benchmark/MD-Eval`.
-3. The OOD data we used to evaluate the dimension selection performance of SaMer and baselines lies in `data/benchmark/OOD`.
-
+1. The train data lie in the `data/P^2-MTD` directory, which contains 11,411 training examples..
+2. Our newly released evaluation dataset is available at `data/Daily-MTD`, where `/data/Daily-MTD/Daily-MTD.csv` is for the single rating task, `/data/Daily-MTD/Daily-MTD-Pair.csv`is for the pairwise comparison task, and `/data/Daily-MTD/Daily-MTD-Dim.csv` is for multi-dimensional comparison tasks.
+3. Please note that we support two distinct models in our experiments: one for overall rating, which can be trained using the train_Multi.sh script in the overall folder; and another for evaluating performance across ten specific dimensions, which can be trained using the train_Multi.sh script in the Multi_Dim folder.
+4. test.py and inference.py are used together for model evaluation.
