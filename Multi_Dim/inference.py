@@ -7,9 +7,9 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-class SaMerClassifier(nn.Module):
+class MTDEvalClassifier(nn.Module):
     def __init__(self, input_dim, num_dimensions):
-        super(SaMerClassifier, self).__init__()
+        super(MTDEvalClassifier, self).__init__()
         self.num_dimensions = num_dimensions
         
         self.mean_layers = nn.ModuleList([
@@ -33,7 +33,7 @@ class LlamaForMDQRwardModel(AutoModelForSequenceClassification):
             num_dimensions = config.num_labels
         else:
             num_dimensions = 10 
-            logger.warning(f"Config num_labels is {getattr(config, 'num_labels', 'None')}, using default {num_dimensions} dimensions for SaMerClassifier")
+            logger.warning(f"Config num_labels is {getattr(config, 'num_labels', 'None')}, using default {num_dimensions} dimensions for MTDEvalClassifier")
         
         if hasattr(config, 'hidden_size'):
             input_dim = config.hidden_size
@@ -41,10 +41,10 @@ class LlamaForMDQRwardModel(AutoModelForSequenceClassification):
             input_dim = getattr(config, 'd_model', 8192) 
             logger.warning(f"Config hidden_size not found, using {input_dim}")
         
-        self.score = SaMerClassifier(input_dim, num_dimensions)
-        logger.info(f"Initialized SaMerClassifier with input_dim={input_dim}, num_dimensions={num_dimensions}")
+        self.score = MTDEvalClassifier(input_dim, num_dimensions)
+        logger.info(f"Initialized MTDEvalClassifier with input_dim={input_dim}, num_dimensions={num_dimensions}")
 
-class SaMerPipeline:
+class MTDEvalPipeline:
     dimensions = ["Accuracy", "Logicality", "Fluency", "Relevance", "Personalization", "Creativity", "Interactivity", "Emotionality", "Knowledge", "Safety"] 
     
     def __init__(self, model_id, device_map="auto", torch_dtype=torch.bfloat16, truncation=True, trust_remote_code=False, max_length=8192):

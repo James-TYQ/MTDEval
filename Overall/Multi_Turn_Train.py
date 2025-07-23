@@ -37,9 +37,9 @@ from Trainer import PreferenceTrainer
 
 logger = logging.getLogger(__name__)
 
-class SaMerClassifier(nn.Module):
+class MTDEvalClassifier(nn.Module):
     def __init__(self, input_dim, output_dim):
-        super(SaMerClassifier, self).__init__()
+        super(MTDEvalClassifier, self).__init__()
         self.mean_layer = nn.Sequential(
             nn.Linear(input_dim, 2048, bias=False), nn.SiLU(), nn.Dropout(0.1),
             nn.Linear(2048, 1024, bias=False), nn.SiLU(),
@@ -65,7 +65,7 @@ class SaMerClassifier(nn.Module):
 class LlamaForMDQRwardModel(AutoModelForSequenceClassification):
     def __init__(self, config):
         super().__init__(config)
-        self.score = SaMerClassifier(config.hidden_size, config.num_labels//2)
+        self.score = MTDEvalClassifier(config.hidden_size, config.num_labels//2)
 
 class DataCollator:
     def __init__(self, args, training_args, tokenizer):
@@ -209,7 +209,7 @@ def main():
             param.requires_grad = False
         
         in_features, out_features = model.score.in_features, model.score.out_features
-        model.score = SaMerClassifier(input_dim=in_features, output_dim=len(args.label_field))
+        model.score = MTDEvalClassifier(input_dim=in_features, output_dim=len(args.label_field))
         for param in model.score.parameters():
             param.requires_grad = True
     else:

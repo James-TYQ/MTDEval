@@ -11,7 +11,7 @@
 
 <h3 id="3.1">⬇️ Step 1: Installation</h3>
 
-To train or inference SaMer, first clone the repository;
+To train or inference MTDEval, first clone the repository;
 
 Next, set up a conda environment to manage the dependencies:
 ```bash
@@ -29,16 +29,13 @@ pip install -r requirements.txt
 If you need to train using SaMer's format, first construct the training data according to the data format in `data/train/seeds.json`. Then, use the following command to train:
 
 ```bash
-bash train_RM.sh   # For better training, you need to adjust some parameters in the file.
+bash train_Multi.sh   # Our setting achieves good performance, but if you want to train a better result, you should adjust some parameters
 ```
 
 <h3 id="3.3">📜 Tips </h3>
 
 1. The train data examples lie in the `data/train/seeds.json` file.
 2. The MD-Eval Benchmark is available at `data/benchmark/MD-Eval`.
-3. The description of each dimension in each scenario can be found in the `utils/prompt/metrics.yaml`.
 3. The OOD data we used to evaluate the dimension selection performance of SaMer and baselines lies in `data/benchmark/OOD`.
-4. The details of why SaMer can outperform GPT-4o on Vicuna Bench can be found in the `other_resources/SaMer_vs_gpt4o_vicunabench`.
 5. `SaMer-llama3-8B` checkpoint is available [here](https://drive.google.com/file/d/1jyZg-SfLVSjWE4G7sic-3VN_g62qK51l/view?usp=sharing).
 
-<h3 id="3.4"> 📖 Data Construction </h3>

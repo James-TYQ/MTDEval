@@ -24,16 +24,16 @@ OUT_PATH = "../Daily-MTD-Single.csv"  # replace with your actual output path
 
 # Import evaluation pipeline
 try:
-    from inference import SaMerPipeline
-    logger.info("Successfully imported SaMerPipeline")
+    from inference import MTDEvalPipeline
+    logger.info("Successfully imported MTDEvalPipeline")
 except ImportError as e:
-    logger.error(f"Failed to import SaMerPipeline: {e}")
+    logger.error(f"Failed to import MTDEvalPipeline: {e}")
     sys.exit(1)
 
 # Initialize evaluation pipeline
 logger.info(f"Loading model: {MODEL_PATH}")
 try:
-    pipeline = SaMerPipeline(
+    pipeline = MTDEvalPipeline(
         model_id=MODEL_PATH,
         trust_remote_code=True,
         torch_dtype=torch.float32

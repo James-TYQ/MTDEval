@@ -6,9 +6,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class SaMerClassifier(nn.Module):
+class MTDEvalClassifier(nn.Module):
     def __init__(self, input_dim, output_dim):
-        super(SaMerClassifier, self).__init__()
+        super(MTDEvalClassifier, self).__init__()
         self.mean_layer = nn.Sequential(
             nn.Linear(input_dim, 2048, bias=False), nn.SiLU(), nn.Dropout(0.1),
             nn.Linear(2048, 1024, bias=False), nn.SiLU(),
@@ -33,9 +33,9 @@ class SaMerClassifier(nn.Module):
 class LlamaForMDQRwardModel(LlamaForSequenceClassification):
     def __init__(self, config):
         super().__init__(config)
-        self.score = SaMerClassifier(config.hidden_size, config.num_labels)
+        self.score = MTDEvalClassifier(config.hidden_size, config.num_labels)
 
-class SaMerPipeline:
+class MTDEvalPipeline:
     def __init__(self, model_id, device_map="auto", torch_dtype=torch.bfloat16, truncation=True, trust_remote_code=False, max_length=8192, dimensions: list[str] | None = None,):
         self.dimensions = dimensions or ["Overall"]
         print(f"pipeline has dimensions: {self.dimensions}")
