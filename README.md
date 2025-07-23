@@ -9,21 +9,24 @@
 
 **MTDEval** is a lightweight open-source evaluator that can efficiently and flexibly evaluate multi-turn dialogues for both single rating and pairwise comparison tasks. Unlike traditional evaluators that suffer from various biases or incur significant computational overhead during inference, MTDEval captures the collective wisdom of multiple LLM judges by aggregating their preference knowledge into a single model. By leveraging a large-scale, multi-judge annotated preference dataset and employing a learning-to-rank framework, it provides reliable, interpretable, and fine-grained quality assessments. MTDEval’s robustness and applicability make it a valuable tool for advancing the evaluation and optimization of LLMs in diverse real-world dialogue scenarios.
 
-<h3 id="3.1">⬇️ Step 1: Installation</h3>
+<h3 id="3.1">🔧 Installation</h3>
 
-To train or inference MTDEval, first clone the repository;
+First clone the repository:
+```bash
+git clone https://github.com/James-TYQ/MTDEval
+```
 
-Next, set up a conda environment to manage the dependencies:
+Next, set up a conda environment:
 ```bash
 conda create -n MTDEval python=3.10.9
 conda activate MTDEval
 ```
-Then, install the required dependencies:
+Then, install the dependencies using pip:
 ```bash
 pip install -r requirements.txt
 ```
 
-<h3 id="3.2">🚀 Quickly Start </h3>
+<h3 id="3.2">⏩ Quickly Start </h3>
 ```
 
 If you need to train using SaMer's format, first construct the training data according to the data format in `data/train/seeds.json`. Then, use the following command to train:
@@ -37,5 +40,4 @@ bash train_Multi.sh   # Our setting achieves good performance, but if you want t
 1. The train data examples lie in the `data/train/seeds.json` file.
 2. The MD-Eval Benchmark is available at `data/benchmark/MD-Eval`.
 3. The OOD data we used to evaluate the dimension selection performance of SaMer and baselines lies in `data/benchmark/OOD`.
-5. `SaMer-llama3-8B` checkpoint is available [here](https://drive.google.com/file/d/1jyZg-SfLVSjWE4G7sic-3VN_g62qK51l/view?usp=sharing).
 
