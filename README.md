@@ -27,9 +27,9 @@ pip install -r requirements.txt
 ```
 
 <h3 id="3.2">⏩ Quickly Start </h3>
-```
+<!-- 如需采用 MTDEval 的数据格式进行训练，请首先按照 /data/P^2-MTD 文件夹中的数据格式构建训练集。需要注意的是，我们支持 two distinct models in our experiments: one for overall rating，在overall文件夹下； and another for evaluating the performance across ten specific dimensions, 在Multi_Dim文件夹下. 可使用如下命令进行模型训练 -->
 
-If you need to train using SaMer's format, first construct the training data according to the data format in `data/train/seeds.json`. Then, use the following command to train:
+If you need to train using MTDEvalr's format, first construct the training data according to the data format in `data/train/seeds.json`. Then, use the following command to train:
 
 ```bash
 bash train_Multi.sh   # Our setting achieves good performance, but if you want to train a better result, you should adjust some parameters
