@@ -29,26 +29,25 @@ pip install -r requirements.txt
 <h3 id="3.2">⏩ Quickly Start </h3>
 
 Users can use MTDEvalPipeline for quick inference:
+
 ```bash
 from inference import MTDEvalPipeline
 
 # Initialize the pipeline with your model
 pipeline = MTDEvalPipeline(
     model_id="YOUR_MODEL_PATH",
-    trust_remote_code=True,  # Required for custom models
-    torch_dtype=torch.float32  # Adjust based on your hardware
+    trust_remote_code=True,  
+    torch_dtype=torch.float32  
 )
 
-# Inference using standard chat message format
 chat_messages = [
     {"role": "user", "content": "What's the capital of France?"},
     {"role": "assistant", "content": "Paris is the capital of France."}
 ]
 
 result = pipeline(chat_messages)
-evaluation_dim = result['evaluation_dim']  # List of evaluated dimensions (default: ["Overall"])
-overall_score = result['overall_score']  # Overall score (0-1 scale)
-```
+evaluation_dim = result['evaluation_dim']  # <span style="color:blue">List of evaluated dimensions</span>
+overall_score = result['overall_score']  # <span style="color:green">Overall score</span>
 
 To train using MTDEval's data format, you need to first construct the training dataset according to the data format provided in the /data/P^2-MTD folder, and then use the commands in the overall and Multi_Dim folders as follows:
 
