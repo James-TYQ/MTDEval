@@ -34,8 +34,8 @@ class PreferenceTrainer(Trainer):
         self.binary_loss = BinaryLoss()
         self.label_field = label_field if label_field else ["Overall"]
 
-        init_sens = torch.logit(torch.full((6,), self.args.initial_sensitivity, device=self.args.device))
-        init_spec = torch.logit(torch.full((6,), self.args.initial_specificity, device=self.args.device))
+        init_sens = torch.logit(torch.full((5,), self.args.initial_sensitivity, device=self.args.device))
+        init_spec = torch.logit(torch.full((5,), self.args.initial_specificity, device=self.args.device))
 
         self.sensitivity = nn.Parameter(init_sens, requires_grad=True)
         self.specificity = nn.Parameter(init_spec, requires_grad=True)
@@ -85,7 +85,7 @@ class PreferenceTrainer(Trainer):
                 p = 0.5 * (1 + torch.erf(-score_diff / torch.sqrt(2 * score_var)))  
                 p_scalar = p.squeeze()                                              
                 row = torch.stack([1 - p_scalar, p_scalar])  
-                p_expand = row.unsqueeze(0).repeat(6, 1)  
+                p_expand = row.unsqueeze(0).repeat(5, 1)  
                 
                 _sensitivity = torch.sigmoid(self.sensitivity)
                 _specificity = torch.sigmoid(self.specificity)
@@ -93,7 +93,7 @@ class PreferenceTrainer(Trainer):
                 beta  = torch.stack(((1-dim_labels[0]) + (-1)**(1-dim_labels[0]) *_specificity, dim_labels[0] + (-1)**dim_labels[0] * _specificity)).T.to(p.device)
 
                 new_labels = []
-                for i in range(6):
+                for i in range(5):
                     if dim_labels[0][i].item() == -1:
                         new_labels.append(torch.tensor([-1, -1], device=dim_labels.device))
                     elif dim_labels[0][i].item() == 1:
