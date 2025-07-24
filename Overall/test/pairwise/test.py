@@ -94,7 +94,7 @@ def main():
 
         try:
             eval_result = pipeline.compare_responses(dialog_A, dialog_B)
-            ground_truth = row.get('conclusion', 'Unknown')
+            ground_truth = row.get('Overall', 'Unknown')
             results.append({
                 "dialog_id": row.get('dialog_id', idx),
                 "A_score": eval_result.get("A_score"),
