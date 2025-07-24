@@ -99,7 +99,7 @@ base_arguments=(
     --confidence_threshold $confidence
     --label_temperature $labeltemp
 
-    --train_datasets_dir ../data/Daily-MTD  # replace with your actual train data path
+    --train_datasets_dir ../data/P^2-MTD  # replace with your actual train data path
 )
 
 echo command: "${header} ${base_arguments[@]}"
