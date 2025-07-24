@@ -27,18 +27,28 @@ pip install -r requirements.txt
 ```
 
 <h3 id="3.2">⏩ Quickly Start </h3>
+To train using MTDEval's data format, you need to first construct the training dataset according to the data format provided in the /data/P^2-MTD folder, and then use the commands in the overall and Multi_Dim folders as follows:
 
-Users can use MTDEvalPipeline for quick inference:
+```bash
+bash train_Multi.sh   # you can adjust some parameters in train_Multi.sh for better training performance
+```
+
+After obtaining the trained models, navigate to the corresponding directory for testing on the Daily-MTD dataset: for the single rating task, access the /Overall/test/single directory; for the pairwise comparison task, access the /Overall/test/pairwise directory; and for the Multi-Dimensional Comparison task, access the /Multi_Dim directory. Then, use the following command to evaluate:
+
+```bash
+python test.py
+```
+
+Users can also use MTDEvalPipeline for quick inference:
 
 ```python
 from inference import MTDEvalPipeline
 
-# Initialize the pipeline with your model
 pipeline = MTDEvalPipeline(
     model_id="YOUR_MODEL_PATH",
     trust_remote_code=True,  
     torch_dtype=torch.float32  
-)
+)  # Initialize the pipeline with your model
 
 chat_messages = [
     {"role": "user", "content": "What's the capital of France?"},
@@ -46,25 +56,13 @@ chat_messages = [
 ]
 
 result = pipeline(chat_messages)
-evaluation_dim = result['evaluation_dim']  # List of evaluated dimensions</span>
-overall_score = result['overall_score']  # Overall score</span>
-```
-
-To train using MTDEval's data format, you need to first construct the training dataset according to the data format provided in the /data/P^2-MTD folder, and then use the commands in the overall and Multi_Dim folders as follows:
-
-```bash
-bash train_Multi.sh   # you can adjust some parameters in train_Multi.sh for better training performance
-```
-
-After obtaining the trained models, for testing on the Daily-MTD dataset, navigate to the appropriate directory: for the single rating task, enter the /Overall/test/single directory; for the pairwise comparison task, enter the /Overall/test/pairwise directory; and for the Multi-Dimensional Comparison task, enter the /Multi_Dim directory. Then, use the following command to evaluate:
-
-```bash
-python test.py
+evaluation_dim = result['evaluation_dim']  # List of evaluated dimensions
+overall_score = result['overall_score']  # Overall score
 ```
 
 <h3 id="3.3">📜 Tips </h3>
 
-1. The train data lie in the `data/P^2-MTD` directory, which contains 11,411 training examples..
-2. Our newly released evaluation dataset is available at `data/Daily-MTD`, where `/data/Daily-MTD/Daily-MTD.csv` is for the single rating task, `/data/Daily-MTD/Daily-MTD-Pair.csv`is for the pairwise comparison task, and `/data/Daily-MTD/Daily-MTD-Dim.csv` is for multi-dimensional comparison tasks.
+1. The train data lie in the `data/P^2-MTD` directory, which contains 11,411 training examples.
+2. Our newly released evaluation dataset is available at `data/Daily-MTD`, where `/data/Daily-MTD/Daily-MTD.csv` is for single rating task, `/data/Daily-MTD/Daily-MTD-Pair.csv`is for pairwise comparison task, and `/data/Daily-MTD/Daily-MTD-Dim.csv` is for multi-dimensional comparison task.
 3. Please note that we support two distinct models in our experiments: one for overall rating, which can be trained using the train_Multi.sh script in the overall folder; and another for evaluating performance across ten specific dimensions, which can be trained using the train_Multi.sh script in the Multi_Dim folder.
-4. test.py and inference.py are used together for model evaluation.
+4. test.py and inference.py are used together for model evaluation, and you can evaluate on your own multi-turn dialogue dataset in CSV format by following the structure used in test.py and inference.py.
