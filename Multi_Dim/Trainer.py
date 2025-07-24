@@ -41,8 +41,8 @@ class PreferenceTrainer(Trainer):
         
         num_dimensions = len(self.label_field)
         
-        init_sens = torch.logit(torch.full((num_dimensions, 6), self.args.initial_sensitivity, device=self.args.device))
-        init_spec = torch.logit(torch.full((num_dimensions, 6), self.args.initial_specificity, device=self.args.device))
+        init_sens = torch.logit(torch.full((num_dimensions, 5), self.args.initial_sensitivity, device=self.args.device))
+        init_spec = torch.logit(torch.full((num_dimensions, 5), self.args.initial_specificity, device=self.args.device))
 
         self.sensitivity = nn.Parameter(init_sens, requires_grad=True)  
         self.specificity = nn.Parameter(init_spec, requires_grad=True) 
@@ -91,7 +91,7 @@ class PreferenceTrainer(Trainer):
                 dim_labels = labels[conclusion_dim]
                 
                 # check if all labels are Fair (-1)
-                all_fair = all(dim_labels[0][i].item() == -1 for i in range(6))
+                all_fair = all(dim_labels[0][i].item() == -1 for i in range(5))
                 if all_fair:
                     logger.debug(f"All labels for {conclusion_dim} are Fair, skipping")
                     continue
@@ -106,16 +106,16 @@ class PreferenceTrainer(Trainer):
                 p = 0.5 * (1 + torch.erf(-score_diff / torch.sqrt(2 * score_var)))
                 p_scalar = p.squeeze()  
                 row = torch.stack([1 - p_scalar, p_scalar])  # [2]
-                p_expand = row.unsqueeze(0).repeat(6, 1)  # [6,2]
+                p_expand = row.unsqueeze(0).repeat(5, 1)  # [5,2]
                 
-                _sensitivity = torch.sigmoid(self.sensitivity[dim_idx])  # [6]
-                _specificity = torch.sigmoid(self.specificity[dim_idx])  # [6]
+                _sensitivity = torch.sigmoid(self.sensitivity[dim_idx])  # [5]
+                _specificity = torch.sigmoid(self.specificity[dim_idx])  # [5]
                 
                 alpha = torch.stack((dim_labels[0] + (-1)**dim_labels[0] * _sensitivity, (1-dim_labels[0]) + (-1)**(1-dim_labels[0]) * _sensitivity)).T.to(p.device)
                 beta  = torch.stack(((1-dim_labels[0]) + (-1)**(1-dim_labels[0]) *_specificity, dim_labels[0] + (-1)**dim_labels[0] * _specificity)).T.to(p.device)
 
                 new_labels = []
-                for i in range(6):
+                for i in range(5):
                     if dim_labels[0][i].item() == -1:
                         new_labels.append(torch.tensor([-1, -1], device=dim_labels.device))
                     elif dim_labels[0][i].item() == 1:
