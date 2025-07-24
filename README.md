@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 Users can use MTDEvalPipeline for quick inference:
 
-```bash
+```python
 from inference import MTDEvalPipeline
 
 # Initialize the pipeline with your model
@@ -46,8 +46,9 @@ chat_messages = [
 ]
 
 result = pipeline(chat_messages)
-evaluation_dim = result['evaluation_dim']  # <span style="color:blue">List of evaluated dimensions</span>
-overall_score = result['overall_score']  # <span style="color:green">Overall score</span>
+evaluation_dim = result['evaluation_dim']  # List of evaluated dimensions</span>
+overall_score = result['overall_score']  # Overall score</span>
+```
 
 To train using MTDEval's data format, you need to first construct the training dataset according to the data format provided in the /data/P^2-MTD folder, and then use the commands in the overall and Multi_Dim folders as follows:
 
