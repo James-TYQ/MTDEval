@@ -62,7 +62,7 @@ overall_score = result['overall_score']  # Overall score
 
 <h3 id="3.3">📜 Tips </h3>
 
-1. The train data lie in the `data/P^2-MTD` directory, which contains approximately 11k training examples (### Note: Due to submission file size limitations, we have included only 3,000 training examples in the submitted file ###).
+1. The train data lie in the `data/P^2-MTD` directory, which contains approximately 11k training examples.
 2. Our newly released evaluation dataset is available at `data/Daily-MTD`, where `/data/Daily-MTD/Daily-MTD.csv` is for single rating task, `/data/Daily-MTD/Daily-MTD-Pair.csv`is for pairwise comparison task, and `/data/Daily-MTD/Daily-MTD-Dim.csv` is for multi-dimensional comparison task.
 3. Please note that we support two distinct models in our experiments: one for overall rating, which can be trained using the train_Multi.sh script in the overall folder; and another for evaluating performance across ten specific dimensions, which can be trained using the train_Multi.sh script in the Multi_Dim folder.
 4. test.py and inference.py are used together for model evaluation, and you can evaluate on your own multi-turn dialogue dataset in CSV format by following the structure used in test.py and inference.py.
